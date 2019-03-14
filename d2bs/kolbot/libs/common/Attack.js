@@ -408,7 +408,7 @@ var Attack = {
 					//if we reached here, it means there was a mob around the telestomp target
 					monsterList.shift();
 					//shift and reappend the target at end, telestomp after we have killed other monsters in list
-					monsterList.Append(target);
+					monsterList.push(target);
 				} else if (result) {
 					retry = 0;
 
