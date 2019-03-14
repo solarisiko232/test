@@ -378,6 +378,9 @@ var Attack = {
 			} while (target.getNext());
 		}
 
+		//we only sort once, instead of each time in the loop
+		monsterList.sort(sortfunc);
+		
 		while (start && monsterList.length > 0 && attackCount < 300) {
 			if (boss) {
 				orgx = boss.x;
@@ -387,9 +390,6 @@ var Attack = {
 			if (me.dead) {
 				return false;
 			}
-
-			//monsterList.sort(Sort.units);
-			monsterList.sort(sortfunc);
 
 			target = copyUnit(monsterList[0]);
 
@@ -403,7 +403,13 @@ var Attack = {
 
 				result = ClassAttack.doAttack(target, attackCount % 15 === 0);
 
-				if (result) {
+				//add our check here, result can be true, false or -1 
+				if (result == -1) {
+					//if we reached here, it means there was a mob around the telestomp target
+					monsterList.shift();
+					//shift and reappend the target at end, telestomp after we have killed other monsters in list
+					monsterList.Append(target);
+				} else if (result) {
 					retry = 0;
 
 					for (i = 0; i < gidAttack.length; i += 1) {
